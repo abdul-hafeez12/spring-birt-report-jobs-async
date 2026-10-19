@@ -49,22 +49,25 @@ sequenceDiagram
     participant C as Client
     participant A as API (JobController)
     participant R as Redis
-    participant W as Worker thread (JobWorker)
+    participant W as Worker Thread (JobWorker)
     participant B as BIRT + MySQL
 
-    C->>A: POST /jobs {design, format, parameters}
-    A->>R: create job (PENDING)
-    A-->>W: hand over to the thread pool
+    C->>A: POST /jobs (design, format, parameters)
+    A->>R: Create job (PENDING)
+    A-->>W: Submit job to thread pool
     A-->>C: 202 Accepted + jobId
-    W->>R: status RUNNING
-    W->>B: run the report
-    B-->>W: report file (pdf / doc / xls)
-    W->>R: status COMPLETED + file path
+
+    W->>R: Update status to RUNNING
+    W->>B: Execute report
+    B-->>W: Return report file (PDF, DOC, XLS)
+    W->>R: Update status to COMPLETED + file path
+
     C->>A: GET /jobs/{jobId}
-    A->>R: read job
-    A-->>C: status, progress, downloadUrl
+    A->>R: Read job status
+    A-->>C: Return status, progress, downloadUrl
+
     C->>A: GET /jobs/{jobId}/download
-    A-->>C: the report file
+    A-->>C: Return report file
 ```
 
 ### Job lifecycle

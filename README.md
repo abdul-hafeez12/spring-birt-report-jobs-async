@@ -387,3 +387,7 @@ report-job-service/
 - [ ] Try `docx` and `xlsx` output
 - [ ] Authentication
 - [ ] Docker Compose file to start the app, Redis and MySQL together
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
